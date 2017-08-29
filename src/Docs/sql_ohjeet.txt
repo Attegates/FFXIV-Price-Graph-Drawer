@@ -1,0 +1,7 @@
+
+Luo tietokanta:
+sqlite3 TIETOKANNAN_NIMI.db
+
+Lue scripti:
+
+sqlite> .read SCRIPTIN_NIMI.sql
