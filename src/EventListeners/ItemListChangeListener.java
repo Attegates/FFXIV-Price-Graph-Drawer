@@ -36,9 +36,8 @@ public class ItemListChangeListener implements ItemListener {
         // Not 2 items (selected and deselected)
         if (ie.getStateChange() == ItemEvent.SELECTED) {         
 
-            // Get the selected items name
+            // Get the selected item and dates.
             String itemName = ie.getItem().toString();
-            // Get the dates with SELECT from the database
             ArrayList<String> dateList = sqlOperator.getAvailableDates(itemName);            
             
             //Remove the itemChangeListener from the fromDateList to prevent it from firing
@@ -47,7 +46,7 @@ public class ItemListChangeListener implements ItemListener {
 
             //Populate the JComboBox lists.
             ListPopulator.populateItemList(fromDateList, dateList);
-            ListPopulator.populateItemList(toDateList, dateList);            
+            ListPopulator.populateItemList(toDateList, dateList);
             
             //Add the itemChangeListener back to the fromDateList
             fromDateList.addItemListener(iList[0]);

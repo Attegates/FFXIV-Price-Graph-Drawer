@@ -34,13 +34,18 @@ public class FromDateListChangeListener implements ItemListener {
             // Get the selected date and all dates after that.
             int i = this.fromDateList.getSelectedIndex();
             int j = this.fromDateList.getItemCount();
+            int fromIndex = i;
+            int toIndex = this.toDateList.getSelectedIndex();
             for (; i < j; i++) {
                 dateList.add(fromDateList.getItemAt(i).toString());
             }
-            
+
             // Populate the toDateList.
             ListPopulator.populateItemList(toDateList, dateList);
-            
+
+            System.out.println("from: " + fromIndex);
+            System.out.println("to: " + toIndex);
+
         }
 
     }

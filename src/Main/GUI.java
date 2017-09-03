@@ -30,7 +30,6 @@ public class GUI implements Runnable {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);        
 
         createComponents(frame.getContentPane());
-        //frame.setJMenuBar(createMenuBar());
 
         frame.pack();
         frame.setVisible(true);
@@ -86,15 +85,27 @@ public class GUI implements Runnable {
         JMenuItem deleteItem = new JMenuItem("Delete Item");
         JMenuItem updateItem = new JMenuItem("Update Item");
         
+        JMenu exportMenu = new JMenu("Export");
+        JMenu exportTxtSubMenu = new JMenu("As txt");
+        exportMenu.add(exportTxtSubMenu);
+        JMenuItem exportAllTxt = new JMenuItem("All values for currently selected item");
+        JMenuItem exportSelectTxt = new JMenuItem("Currently selected values");
+        //JMenuItem exportCsv = new JMenuItem("As csv");        
+        
         newItem.addActionListener(new NewItemButtonListener(this.sqlOperator, itemList));
         deleteItem.addActionListener(new DeleteItemButtonListener(this.sqlOperator, itemList));
         updateItem.addActionListener(new UpdateItemButtonListener(sqlOperator, itemList));
-        
+        exportAllTxt.addActionListener(new ExportAllTxtButtonListener(sqlOperator, itemList));
+        exportSelectTxt.addActionListener(new ExportSelectedTxtButtonListener(sqlOperator, itemList, fromDateList, toDateList));        
 
         fileMenu.add(newItem);
         fileMenu.add(deleteItem);
         fileMenu.add(updateItem);
+        exportTxtSubMenu.add(exportAllTxt);
+        exportTxtSubMenu.add(exportSelectTxt);
+        //exportMenu.add(exportCsv);
         menuBar.add(fileMenu);
+        menuBar.add(exportMenu);
         frame.setJMenuBar(menuBar);
         // MenuBar
     }
