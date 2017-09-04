@@ -11,7 +11,11 @@ CREATE TABLE price(
     ItemName TEXT,
     Price INT,
     CheckedDate TEXT,
-    FOREIGN KEY(ItemName) REFERENCES item(Name),
+	CONSTRAINT fk_price
+		FOREIGN KEY(ItemName)
+		REFERENCES item(Name)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
     PRIMARY KEY (ItemName, CheckedDate)
 );
 
