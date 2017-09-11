@@ -7,6 +7,7 @@ package EventListeners;
 
 import Main.ListPopulator;
 import Main.SQLOperator;
+import CustomExceptions.UniqueConstraintException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -33,9 +34,12 @@ public class NewItemButtonListener implements ActionListener {
 
         // Add the item to the database and the JComboBox list.
         if (itemName != null && !itemName.equals("")) {
-            sqlops.newItem(itemName);
-            // Update the item list.
-            ListPopulator.populateItemList(itemList, sqlops.getItems());
+            try {
+                sqlops.newItem(itemName);
+                ListPopulator.populateItemList(itemList, sqlops.getItems());
+            } catch (UniqueConstraintException e) {
+                JOptionPane.showMessageDialog(null, "Item already exists.");
+            }
             itemList.setSelectedItem(itemName);
         }
     }

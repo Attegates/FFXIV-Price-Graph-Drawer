@@ -5,6 +5,7 @@
  */
 package Main;
 
+import CustomExceptions.UniqueConstraintException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +24,6 @@ public class SQLOperator {
     private Connection conn = null;
     private String dburl = "";
     SQLiteConfig sqlConfig;
-    
 
     public SQLOperator() {
         try {
@@ -212,7 +212,12 @@ public class SQLOperator {
         return priceList;
     }
 
-    public void newItem(String name) {
+    /**
+     * 
+     * @param name Items name
+     * @throws UniqueConstraintException 
+     */
+    public void newItem(String name) throws UniqueConstraintException {
 
         this.connect();
 
@@ -223,6 +228,9 @@ public class SQLOperator {
             pstmnt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            if (e.getErrorCode() == 19) {
+                throw new UniqueConstraintException("Unique constraint violation.");
+            }
         } finally {
             this.disconnect();
         }
@@ -234,18 +242,13 @@ public class SQLOperator {
      * @param item - Item whose price to update.
      * @param price - Current price as integer.
      * @param date - Current date as string.
+     * @throws CustomExceptions.UniqueConstraintException
      */
-    public void newPriceInfo(String item, int price, String date) {
+    public void newPriceInfo(String item, int price, String date) throws UniqueConstraintException {
         this.connect();
 
         String insert = "INSERT INTO Price VALUES(?,?,?)";
 
-        /*
-        TODO
-        item exists (sql constraint ja error jos on olemassa)
-        date is valid ( use current date? )
-        price is valid
-         */
         try (PreparedStatement pstmnt = this.conn.prepareStatement(insert)) {
             pstmnt.setString(1, item);
             pstmnt.setInt(2, price);
@@ -253,6 +256,9 @@ public class SQLOperator {
             pstmnt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            if (e.getErrorCode() == 19) {
+                throw new UniqueConstraintException("Unique constraint violation.");
+            }
         } finally {
             this.disconnect();
         }
@@ -288,12 +294,6 @@ public class SQLOperator {
     public void updateItem(String itemOldName, String itemNewName) {
         this.connect();
 
-        // kopioi hinnat
-        // poista vanha item
-        // lisää uusi
-        // lisää hinnat uudella nimellä
-        // ??
-        
         String update = "UPDATE item SET name = (?) WHERE name = (?)";
 
         try (PreparedStatement pstmnt = this.conn.prepareStatement(update)) {

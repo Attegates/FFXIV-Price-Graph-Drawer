@@ -43,9 +43,6 @@ public class FromDateListChangeListener implements ItemListener {
             // Populate the toDateList.
             ListPopulator.populateItemList(toDateList, dateList);
 
-            System.out.println("from: " + fromIndex);
-            System.out.println("to: " + toIndex);
-
         }
 
     }

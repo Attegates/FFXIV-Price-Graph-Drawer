@@ -5,6 +5,7 @@
  */
 package EventListeners;
 
+import CustomExceptions.UniqueConstraintException;
 import Main.ListPopulator;
 import Main.SQLOperator;
 import java.awt.event.ActionEvent;
@@ -75,8 +76,13 @@ public class NewPriceInfoButtonListener implements ActionListener {
         // add the new price to the database and update the date lists.
         if (choice == 0) {
             int priceAsInt = Integer.parseInt(price);
-            sqlops.newPriceInfo(item, priceAsInt, date);
-            updateDateLists(item);
+            try {
+                sqlops.newPriceInfo(item, priceAsInt, date);
+                updateDateLists(item);
+            } catch (UniqueConstraintException ex) {
+                JOptionPane.showMessageDialog(null, "Price info for the given date already exists.\n"
+                        + "Only one price info per day is permitted.");
+            }
         }
 
     }
