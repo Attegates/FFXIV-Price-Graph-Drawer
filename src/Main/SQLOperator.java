@@ -306,5 +306,21 @@ public class SQLOperator {
             this.disconnect();
         }
     }
+    
+    public void deletePrice(String itemName, String date) {
+        this.connect();
+        
+        String delete = "DELETE FROM price WHERE itemname = (?) AND checkeddate = (?)";
+        
+        try (PreparedStatement pstmnt = this.conn.prepareStatement(delete)) {
+            pstmnt.setString(1, itemName);
+            pstmnt.setString(2, date);
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            this.disconnect();
+        }
+    }
 
 }
